@@ -2,6 +2,7 @@ package com.santiagolandi.estudiantesapi.controller;
 
 import com.santiagolandi.estudiantesapi.dto.EstudianteDTO;
 import com.santiagolandi.estudiantesapi.service.EstudianteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,13 +36,13 @@ public class EstudianteController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<?> registrarEstudiante(@RequestBody EstudianteDTO estudiante) {
+    public ResponseEntity<?> registrarEstudiante(@Valid @RequestBody EstudianteDTO estudiante) {
         estudianteService.crearEstudiante(estudiante);
         return ResponseEntity.status(HttpStatus.CREATED).body(estudiante);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>actualizarEstudiante(@RequestBody EstudianteDTO estudiante, @PathVariable Long id) {
+    public ResponseEntity<?>actualizarEstudiante(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Long id) {
         estudianteService.actualizarEstudiante(id, estudiante);
         return ResponseEntity.ok(estudiante);
     }
