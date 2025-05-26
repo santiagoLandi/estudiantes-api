@@ -9,7 +9,7 @@ import com.santiagolandi.estudiantesapi.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,18 +41,16 @@ public class EstudianteService {
     @Transactional
     public EstudianteDTO crearEstudiante(EstudianteDTO estudianteDTO){
         Estudiante nuevoEstudiante = new Estudiante();
-        nuevoEstudiante.setNombre(estudianteDTO.getNombre());
-        nuevoEstudiante.setApellido(estudianteDTO.getApellido());
-        nuevoEstudiante.setDni(estudianteDTO.getDni());
-        nuevoEstudiante.setEmail(estudianteDTO.getEmail());
-        nuevoEstudiante.setCiudad(estudianteDTO.getCiudad());
-        estudianteRepository.save(nuevoEstudiante);
-        return estudianteMapper.toEstudianteDTO(nuevoEstudiante);
+        return mapearAestudianteDTO(estudianteDTO, nuevoEstudiante);
     }
 
     @Transactional
     public EstudianteDTO actualizarEstudiante(Long id,EstudianteDTO estudianteDTO){
         Estudiante buscado = estudianteRepository.findById(id).orElseThrow(()-> new EstudianteNoEncontradoException(id));
+        return mapearAestudianteDTO(estudianteDTO, buscado);
+    }
+
+    private EstudianteDTO mapearAestudianteDTO(EstudianteDTO estudianteDTO, Estudiante buscado) {
         buscado.setNombre(estudianteDTO.getNombre());
         buscado.setApellido(estudianteDTO.getApellido());
         buscado.setDni(estudianteDTO.getDni());
