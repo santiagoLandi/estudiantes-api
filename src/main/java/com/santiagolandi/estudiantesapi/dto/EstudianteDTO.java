@@ -2,7 +2,7 @@ package com.santiagolandi.estudiantesapi.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-
+import jakarta.validation.constraints.NotNull;
 
 
 public class EstudianteDTO {
@@ -13,7 +13,7 @@ public class EstudianteDTO {
     @NotBlank(message = "El apellido es obligatorio")
     private String apellido;
 
-    @NotBlank(message = "El dni es obligatorio")
+    @NotNull(message = "El dni es obligatorio")
     private Long dni;
 
     @Email(message = "Debe ser un mail valido")
