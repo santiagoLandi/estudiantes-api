@@ -19,11 +19,35 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
+    // Para ciudad sin estudiantes
+    @ExceptionHandler(CiudadSinEstudiantesException.class)
+    public ResponseEntity<ErrorMessage> handleCiudadSinEstudiantes(CiudadSinEstudiantesException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage("Ciudad no encontrada", ex.getMessage()));
+    }
+
+    // Para cuando el nombre indicado no trae estudiantes
+    @ExceptionHandler(NombreSinEstudiantesException.class)
+    public ResponseEntity<ErrorMessage> handleNombreSinEstudiantes(NombreSinEstudiantesException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage("Nombre no encontrado", ex.getMessage()));
+    }
+
+    // 👇 Manejo específico para email sin estudiante
+    @ExceptionHandler(EmailSinEstudianteException.class)
+    public ResponseEntity<ErrorMessage> handleEmailSinEstudiante(EmailSinEstudianteException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorMessage("Email no encontrado", ex.getMessage()));
+    }
+
+    // excepcion generica
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorMessage> handleRuntimeException(RuntimeException ex) {
         ErrorMessage error = new ErrorMessage("Error interno", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
+
+
 
 record ErrorMessage(String mensaje, String detalle) {}

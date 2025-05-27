@@ -23,9 +23,6 @@ public class EstudianteController {
     @GetMapping("/")
     public ResponseEntity<?>obtenerEstudiantes() {
         List<EstudianteDTO>estudiantes = estudianteService.obtenerTodos();
-        if (estudiantes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(estudiantes);
     }
 
@@ -51,6 +48,24 @@ public class EstudianteController {
     public ResponseEntity<?> eliminarEstudiante(@PathVariable Long id) {
         estudianteService.eliminarEstudiante(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<?> obtenerEstudiantePorEmail(@PathVariable String email) {
+        EstudianteDTO buscado = estudianteService.obtenerEstudiantePorEmail(email);
+        return ResponseEntity.ok(buscado);
+    }
+
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<?> obtenerEstudiantePorNombre(@PathVariable String nombre) {
+        List<EstudianteDTO>estudiantes = estudianteService.obtenerEstudiantesPorNombre(nombre);
+        return ResponseEntity.ok(estudiantes);
+    }
+
+    @GetMapping("/ciudad/{ciudad}")
+    public ResponseEntity<?> obtenerEstudiantePorCiudad(@PathVariable String ciudad) {
+        List<EstudianteDTO>estudiantes = estudianteService.obtenerEstudiantesPorCiudad(ciudad);
+        return ResponseEntity.ok(estudiantes);
     }
 
 

@@ -3,7 +3,10 @@ package com.santiagolandi.estudiantesapi.service;
 
 import com.santiagolandi.estudiantesapi.dto.EstudianteDTO;
 import com.santiagolandi.estudiantesapi.entity.Estudiante;
+import com.santiagolandi.estudiantesapi.exception.CiudadSinEstudiantesException;
+import com.santiagolandi.estudiantesapi.exception.EmailSinEstudianteException;
 import com.santiagolandi.estudiantesapi.exception.EstudianteNoEncontradoException;
+import com.santiagolandi.estudiantesapi.exception.NombreSinEstudiantesException;
 import com.santiagolandi.estudiantesapi.mapper.EstudianteMapper;
 import com.santiagolandi.estudiantesapi.repository.EstudianteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +67,32 @@ public class EstudianteService {
     public void eliminarEstudiante(Long id){
         Estudiante buscado = estudianteRepository.findById(id).orElseThrow(()-> new EstudianteNoEncontradoException(id));
         estudianteRepository.delete(buscado);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EstudianteDTO> obtenerEstudiantesPorCiudad(String ciudad){
+        List<Estudiante>filtrados = estudianteRepository.findByCiudad(ciudad);
+        if(filtrados.isEmpty()){
+            throw  new CiudadSinEstudiantesException(ciudad);
+        }
+        return filtrados.stream().map(estudianteMapper::toEstudianteDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EstudianteDTO> obtenerEstudiantesPorNombre(String nombre){
+        List<Estudiante>buscados = estudianteRepository.findByNombre(nombre);
+        if(buscados.isEmpty()){
+            throw new NombreSinEstudiantesException(nombre);
+        }
+        return buscados.stream().map(estudianteMapper::toEstudianteDTO).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public EstudianteDTO obtenerEstudiantePorEmail(String email){
+        Estudiante buscado = estudianteRepository.findByEmail(email);
+        if(buscado == null){
+            throw new EmailSinEstudianteException(email);
+        }
+        return estudianteMapper.toEstudianteDTO(buscado);
     }
 }
