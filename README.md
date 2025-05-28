@@ -61,8 +61,10 @@ API REST desarrollada en Java con Spring Boot que permite gestionar estudiantes,
   Buscar estudiante por email
 - GET /estudiante/email/{email}
 
+---
 
-❗ Manejo de errores
+# ❗ Manejo de errores
+
   Validaciones gestionadas con Bean Validation (anotaciones como @NotBlank, @Email, etc).
 
   Errores centralizados con @ControllerAdvice y mensajes personalizados para:
@@ -75,7 +77,8 @@ API REST desarrollada en Java con Spring Boot que permite gestionar estudiantes,
 
   Email inexistente
 
-  ✍️ Autor
+---
+#  ✍️ Autor
   Desarrollado por Santiago Landi como práctica backend con Java y Spring Boot.
 
 
